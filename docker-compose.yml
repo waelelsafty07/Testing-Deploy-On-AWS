@@ -6,9 +6,7 @@ services:
     restart: always
     volumes:
       - .:/django
-    ports:
-      - 4000:4000
-    command: poetry run python manage.py runserver 0.0.0.0:4000
+    command: poetry run python manage.py runserver
     deploy:
       replicas: 4
       update_config:
