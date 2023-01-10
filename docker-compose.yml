@@ -1,7 +1,7 @@
 version: '3'
 services:
   django-app:
-    image: waelelsafty07/test_docker
+    image: waelelsafty07/portfolio
     build: .
     restart: always
     ports:
@@ -62,7 +62,7 @@ services:
         # HTTP management UI
         - '15672:15672'
   celery:
-    image: waelelsafty07/test_docker
+    image: waelelsafty07/portfolio
     build: 
       context: .
     restart: always
