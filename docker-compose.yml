@@ -28,7 +28,7 @@ services:
       - celery
       
   db:
-    image: db
+    image: mysql/mysql-server:8.0
     build:
       context: .
       dockerfile: ./docker/mysql/Dockerfile
