@@ -17,6 +17,7 @@ services:
       - db
       - redis  
       - rabbitmq
+      - celery
     env_file:
       - .env
 
@@ -29,7 +30,6 @@ services:
       - "80:80"
     depends_on:
       - django-app
-      - celery
       
   db:
     image: mysql/mysql-server:8.0
