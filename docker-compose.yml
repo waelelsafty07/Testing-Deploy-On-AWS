@@ -2,17 +2,11 @@ version: '3'
 services:
   django-app:
     image: waelelsafty07/portfolio
+    ports:
+      - 4000:4000
     volumes:
       - .:/django
-    command: poetry run python manage.py runserver
-    deploy:
-      replicas: 2
-      update_config:
-        parallelism:  1
-        delay: 10s
-      restart_policy:
-        condition: on-failure
-        delay: 5s
+    command: poetry run python manage.py runserver 0.0.0.0:4000
     depends_on:
       - db
       - redis  
