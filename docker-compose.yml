@@ -1,0 +1,82 @@
+version: '3'
+services:
+  django-app:
+    build: .
+    restart: always
+    volumes:
+      - .:/django
+    ports:
+      - 4000:4000
+    command: poetry run python manage.py runserver 0.0.0.0:4000
+    depends_on:
+      - db
+      - redis  
+      - rabbitmq
+    env_file:
+      - .env
+
+      
+  nginx:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - django-app
+      - celery
+      
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3307:3306"
+      
+  redis:
+    image: redis
+    restart: always
+    volumes:
+        - redis_data:/data
+    ports:
+      - '6379:6379'
+    command: redis-server --requirepass secret
+    
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    restart: always
+    environment:
+        - RABBITMQ_DEFAULT_USER=myuser
+        - RABBITMQ_DEFAULT_PASS=mypassword
+    
+    ports:
+        # AMQP protocol port
+        - '5672:5672'
+        # HTTP management UI
+        - '15672:15672'
+  celery:
+    build: 
+      context: .
+    restart: always
+    command: poetry run celery -A server  worker 
+    volumes:
+      - .:/django
+    env_file:
+      - .env
+
+    depends_on:
+        - db
+        - rabbitmq
+        - redis
+      
+volumes:
+  mysql_data:
+  redis_data:
+  rabbitmq_data:
+
+    
