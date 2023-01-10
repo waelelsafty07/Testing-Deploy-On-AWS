@@ -57,7 +57,7 @@ services:
         # HTTP management UI
         - '15672:15672'
   celery:
-    image: waelelsafty07/portfolio
+    image: celery
     build: 
       context: .
     restart: always
