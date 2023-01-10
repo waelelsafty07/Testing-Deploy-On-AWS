@@ -4,11 +4,11 @@ services:
     image: waelelsafty07/portfolio
     volumes:
       - .:/django
-    command: poetry run python manage.py runserver 0.0.0.0:8000
+    command: poetry run python manage.py runserver
     deploy:
-      replicas: 4
+      replicas: 2
       update_config:
-        parallelism:  2
+        parallelism:  1
         delay: 10s
       restart_policy:
         condition: on-failure
