@@ -74,7 +74,6 @@ services:
       - .env
 
     depends_on:
-        - db
         - rabbitmq
         - redis
       
