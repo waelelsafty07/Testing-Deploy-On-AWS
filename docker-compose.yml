@@ -67,6 +67,7 @@ services:
         # HTTP management UI
         - '15672:15672'
   celery:
+    image: waelelsafty07/test_docker
     build: 
       context: .
     restart: always
